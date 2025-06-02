@@ -1,4 +1,3 @@
-import HeroSection from './Components/Hero';
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/navbar';
@@ -7,6 +6,7 @@ import ContactComponent from './components/contact';
 import CursorFollower from './components/cursor';
 import AboutMe from './components/about';
 import Layout from './components/layout';
+import HeroSection from './components/hero';
 
 
 function App() {
