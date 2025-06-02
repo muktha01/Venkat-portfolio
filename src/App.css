@@ -1,0 +1,14 @@
+
+:root {
+  --font-heading: 'Space Mono', monospace;
+}
+
+* {
+
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;}
+
+body {
+  background-color: #0a0c10;
+  color: white;              
+}
