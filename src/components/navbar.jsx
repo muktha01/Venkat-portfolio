@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Asterisk, Download, Menu, X } from 'lucide-react';
+import resume from '../assets/Venkateswara_Rao_Fullstack_Developer-2.pdf'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -152,8 +153,7 @@ export default function Navbar() {
                            ${spinning ? 'animate-spin' : ''} 
                            sm:w-16 sm:h-16 lg:w-20 lg:h-20`}
               />
-              <span className="hidden sm:inline transition-all duration-300">Portfolio</span>
-            </div>
+         </div>
           </div>
 
           {/* Desktop Navigation */}
@@ -186,7 +186,7 @@ export default function Navbar() {
             })}
             <li>
               <a
-                href="/resume.pdf"
+                href={resume}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 px-3 py-2 text-gray-200 hover:text-white 
@@ -262,7 +262,7 @@ export default function Navbar() {
               }`}
               style={{ transitionDelay: isOpen ? `${navLinks.length * 50}ms` : '0ms' }}>
                 <a
-                  href="/resume.pdf"
+                  href={resume}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center space-x-2 text-lg sm:text-xl 

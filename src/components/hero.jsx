@@ -12,7 +12,7 @@ export default function HeroSection() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setInitialHighlight(false);
-    }, 3000);
+    }, 10000);
 
     return () => clearTimeout(timer);
   }, []);

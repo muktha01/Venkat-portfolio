@@ -8,7 +8,172 @@
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;}
 
+
+/* Reset and base styles for mobile compatibility */
+* {
+ 
+  box-sizing: border-box;
+}
+
+html {
+  /* Prevent horizontal scroll */
+  overflow-x: hidden;
+  width: 100%;
+  
+  /* Enhanced mobile scrolling */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  
+  /* Fix for mobile viewport issues */
+  height: 100%;
+  min-height: 100%;
+}
+
 body {
-  background-color: #0a0c10;
-  color: white;              
+  /* Prevent horizontal scroll */
+  overflow-x: hidden;
+  width: 100%;
+
+   background-color: #0a0c10;
+  color: white;       
+  
+  /* Mobile-friendly font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Ensure proper height on mobile */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  
+  /* Prevent zoom on input focus (iOS) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Root app container */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
+/* App container */
+.App {
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
+/* Mobile-specific fixes */
+@media screen and (max-width: 768px) {
+  /* Fix for iOS Safari bottom bar */
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    height: -webkit-fill-available;
+  }
+  
+  /* Improve touch targets */
+  button, a, input, select, textarea {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+  
+  /* Prevent zoom on form inputs */
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+/* Fix for mobile browsers address bar hiding */
+@media screen and (max-width: 768px) {
+  .mobile-height-fix {
+    min-height: 100vh;
+    min-height: calc(100vh - env(safe-area-inset-bottom));
+  }
+}
+
+/* Improve scrolling performance */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* Fix for potential layout shift */
+.content-wrapper {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Enhanced focus states for mobile accessibility */
+@media (hover: none) and (pointer: coarse) {
+  button:focus,
+  a:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+}
+
+/* Prevent text selection on touch devices where inappropriate */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Improve performance with hardware acceleration */
+.gpu-accelerated {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Fix for mobile horizontal scrolling issues */
+* {
+  max-width: 100%;
+}
+
+img, video {
+  height: auto;
+  max-width: 100%;
+}
+
+/* Additional mobile viewport fixes */
+@supports (-webkit-touch-callout: none) {
+  /* iOS specific fixes */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Landscape orientation fixes for mobile */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  body {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+}
+
+/* Fix for mobile keyboard appearing */
+@media screen and (max-width: 768px) {
+  .keyboard-adjust {
+    transition: all 0.3s ease;
+  }
+  
+  .keyboard-adjust.keyboard-open {
+    padding-bottom: 0;
+  }
 }

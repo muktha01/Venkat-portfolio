@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import ConnectSection from './social';
+import emailjs from '@emailjs/browser';
 
 const ContactComponent = () => {
+  const formRef = useRef();
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    from_name: '',
+    from_email: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,15 +23,15 @@ const ContactComponent = () => {
   };
 
   const validateForm = () => {
-    if (!formData.name.trim()) {
+    if (!formData.from_name.trim()) {
       setError('Name is required');
       return false;
     }
-    if (!formData.email.trim()) {
+    if (!formData.from_email.trim()) {
       setError('Email is required');
       return false;
     }
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (!/\S+@\S+\.\S+/.test(formData.from_email)) {
       setError('Please enter a valid email address');
       return false;
     }
@@ -48,60 +51,58 @@ const ContactComponent = () => {
     setShowSuccess(false);
     setError('');
 
-    setTimeout(() => {
-      setShowSuccess(true);
-      setFormData({ name: '', email: '', message: '' });
-      setIsSubmitting(false);
-      setTimeout(() => setShowSuccess(false), 5000);
-    }, 2000);
+    emailjs.sendForm(
+      'service_0vka514',     // Replace with your service ID
+      'template_23b4jss',    // Replace with your template ID
+      formRef.current,
+      'd0ySXiCChgxFkUoau'    // Replace with your public key
+    )
+      .then(() => {
+        setShowSuccess(true);
+        setFormData({ from_name: '', from_email: '', message: '' });
+        setIsSubmitting(false);
+        setTimeout(() => setShowSuccess(false), 5000);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError('Failed to send message. Please try again.');
+        setIsSubmitting(false);
+      });
   };
 
   return (
     <div className="min-h-screen px-4 md:px-8 lg:px-20 relative overflow-hidden text-white font-sans">
-
-       <div className="fixed inset-0 pointer-events-none select-none overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none select-none overflow-hidden">
         <div className="absolute bottom-0 left-0 opacity-5">
-          <h1
-            className="text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[12rem] font-black tracking-wider whitespace-nowrap  opacity-50"
-            style={{ fontFamily: "Space Mono" }}
-          >
+          <h1 className="text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[12rem] font-black tracking-wider whitespace-nowrap opacity-50" style={{ fontFamily: "Space Mono" }}>
             Contact Me
           </h1>
         </div>
       </div>
 
-      {/* Gradient Overlay */}
       <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-blue-900/10 pointer-events-none" />
 
-      {/* Header */}
       <div className="relative z-10 container mx-auto px-6 pt-16">
-        <div className="inline-block">
-  <div className="inline-block">
-    <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-1 tracking-tight">
-      <span className="inline-block relative">
-        Contact
-        <div className="h-1 mt-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full animate-pulse" />
-      </span>
-      <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent ml-4">
-        ME
-      </span>
-    </h1>
-  </div>
-</div>
-
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-1 tracking-tight">
+          <span className="inline-block relative">
+            Contact
+            <div className="h-1 mt-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full animate-pulse" />
+          </span>
+          <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent ml-4">
+            ME
+          </span>
+        </h1>
         <p className="text-lg md:text-xl text-gray-300 mt-8 max-w-4xl leading-relaxed">
-          Get in touch or shoot me an email directly on{' '}
+          Get in touch or shoot me an email directly at{' '}
           <a href="mailto:venkatb12127@gmail.com" className="text-white font-semibold">
             venkatb12127@gmail.com
           </a>
         </p>
       </div>
 
-      {/* Contact Form Section */}
-      <div className="w-full px-4 py-16 flex flex-col items-center justify-center relative z-10">
-        <div className="max-w-2xl w-full space-y-6">
+      <div className="w-full px-4 py-16 md:px-10 flex flex-col items-center justify-center relative z-10">
+        <div className="w-full md:px-32 space-y-6">
 
-          {/* Success Message */}
           {showSuccess && (
             <div className="p-4 bg-green-500/20 border border-green-500/50 rounded-md">
               <div className="flex items-center gap-2">
@@ -114,7 +115,6 @@ const ContactComponent = () => {
             </div>
           )}
 
-          {/* Error Message */}
           {error && (
             <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-md">
               <div className="flex items-center gap-2">
@@ -126,13 +126,12 @@ const ContactComponent = () => {
             </div>
           )}
 
-          {/* Form Inputs */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
             <input
               type="text"
-              name="name"
+              name="from_name"
               placeholder="Name"
-              value={formData.name}
+              value={formData.from_name}
               onChange={handleInputChange}
               className="w-full bg-transparent focus:bg-black/60 border border-white/20 text-white px-4 py-3 rounded-md focus:outline-none focus:border-white/40 transition-colors"
               autoComplete="name"
@@ -141,9 +140,9 @@ const ContactComponent = () => {
 
             <input
               type="email"
-              name="email"
+              name="from_email"
               placeholder="Email"
-              value={formData.email}
+              value={formData.from_email}
               onChange={handleInputChange}
               className="w-full bg-transparent focus:bg-black/60 border border-white/20 text-white px-4 py-3 rounded-md focus:outline-none focus:border-white/40 transition-colors"
               autoComplete="email"
@@ -160,7 +159,6 @@ const ContactComponent = () => {
               disabled={isSubmitting}
             ></textarea>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -178,19 +176,17 @@ const ContactComponent = () => {
                 'Send Message'
               )}
             </button>
-             <a href="/" className="inline-flex items-center gap-2 text-white/80 text-sm hover:text-white transition">
+
+            <a href="/" className="inline-flex items-center gap-2 text-white/80 text-sm hover:text-white transition">
               Go Back Home <span className="text-xl">→</span>
             </a>
           </form>
-
-          {/* Navigation and Socials */}
-        
         </div>
       </div>
 
-       <div className="mt-10">
-              <ConnectSection />
-          </div>
+      <div className="mt-10">
+        <ConnectSection />
+      </div>
     </div>
   );
 };
