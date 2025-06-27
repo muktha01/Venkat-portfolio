@@ -149,7 +149,7 @@ export default function Navbar() {
         ref={navRef}
         className={`w-full z-50 transition-all duration-700 ease-out will-change-transform
                     ${isSticky
-                      ? 'fixed top-0 left-0 right-0 backdrop-blur-md bg-transparent/5 shadow-lg shadow-black/10'
+                      ? 'fixed top-0 left-0 right-0 backdrop-blur-md bg-transparent shadow-lg shadow-black/10'
                       : 'mt-6 sm:mt-8 lg:mt-10 bg-transparent'
                     }`}
         style={{
@@ -249,7 +249,7 @@ export default function Navbar() {
         <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-out ${
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className={`${isSticky ? 'bg-transparent/5 backdrop-blur-md' : 'bg-transparent/5 backdrop-blur-sm'} 
+          <div className={`${isSticky ? 'bg-transparent backdrop-blur-md' : 'bg-transparent backdrop-blur-sm'} 
                           border-t border-gray-700/50`}>
             <ul className="text-white text-center py-6 space-y-4">
               {navLinks.map((link, index) => {
