@@ -10,6 +10,9 @@ export default function Navbar() {
   const [isSticky, setIsSticky] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
   const navRef = useRef(null);
+  
+  // Fixed scroll threshold - no longer dependent on navbar position
+  const SCROLL_THRESHOLD = 150; // Scroll 150px before navbar becomes sticky
 
   const navLinks = [
     { name: 'About', href: '/about' },
@@ -39,19 +42,27 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      const stickyThreshold = navRef.current ? navRef.current.offsetTop : 50;
-
-      if (scrollPosition > stickyThreshold) {
+      
+      // Add hysteresis to prevent flickering
+      // Different thresholds for going sticky vs unsticky
+      const shouldBeSticky = scrollPosition > SCROLL_THRESHOLD;
+      const shouldBeUnsticky = scrollPosition < (SCROLL_THRESHOLD - 50); // 50px buffer
+      
+      if (shouldBeSticky && !isSticky) {
         setIsSticky(true);
-      } else {
+      } else if (shouldBeUnsticky && isSticky) {
         setIsSticky(false);
       }
+      
+      lastScrollY = scrollPosition;
     };
 
-    // Throttle scroll events for better performance
-    let ticking = false;
+    // Optimized scroll handler with requestAnimationFrame
     const throttledScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -62,14 +73,14 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener('scroll', throttledScroll, { passive: true });
-    
+    // Initial height measurement
     if (navRef.current) {
       setNavHeight(navRef.current.offsetHeight);
     }
-    
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
     return () => window.removeEventListener('scroll', throttledScroll);
-  }, []);
+  }, [isSticky]); // Include isSticky in dependencies for hysteresis
 
   useEffect(() => {
     if (navRef.current) {
@@ -77,13 +88,13 @@ export default function Navbar() {
         setNavHeight(navRef.current.offsetHeight);
       };
       
-      // Use ResizeObserver for more accurate height tracking
+      // Use ResizeObserver for accurate height tracking
       const resizeObserver = new ResizeObserver(updateHeight);
       resizeObserver.observe(navRef.current);
       
       return () => resizeObserver.disconnect();
     }
-  }, [isSticky]);
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -95,7 +106,7 @@ export default function Navbar() {
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = 'hidden'; // Prevent background scroll
+      document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -130,17 +141,23 @@ export default function Navbar() {
     <>
       {/* Smooth placeholder to prevent content jump */}
       <div 
-        className={`transition-all duration-500 ease-out ${isSticky ? 'block' : 'hidden'}`}
+        className={`transition-all duration-700 ease-out ${isSticky ? 'block' : 'hidden'}`}
         style={{ height: isSticky ? navHeight : 0 }} 
       />
 
       <nav
         ref={navRef}
-        className={`w-full z-50 transition-all duration-500 ease-out transform
+        className={`w-full z-50 transition-all duration-700 ease-out will-change-transform
                     ${isSticky
-                      ? 'fixed top-0 left-0 right-0  backdrop-blur-xs bg-slate  translate-y-0'
-                      : 'mt-6 sm:mt-8 lg:mt-10 bg-transparent translate-y-0'
+                      ? 'fixed top-0 left-0 right-0 backdrop-blur-md bg-transparent/5 shadow-lg shadow-black/10'
+                      : 'mt-6 sm:mt-8 lg:mt-10 bg-transparent'
                     }`}
+        style={{
+          // Ensure smooth transform without subpixel rendering issues
+          transform: isSticky ? 'translate3d(0, 0, 0)' : 'none',
+          backfaceVisibility: 'hidden',
+          perspective: 1000,
+        }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-3 sm:py-4 flex items-center justify-between">
           {/* Logo */}
@@ -148,12 +165,16 @@ export default function Navbar() {
             <div className="text-white font-semibold text-xl sm:text-2xl tracking-wider flex items-center">
               <Asterisk
                 size={isSticky ? 50 : 60}
-                className={`inline-block mr-2 transition-all duration-500 ease-out transform
+                className={`inline-block mr-2 transition-all duration-700 ease-out transform
                            group-hover:scale-110 group-hover:rotate-12
                            ${spinning ? 'animate-spin' : ''} 
                            sm:w-16 sm:h-16 lg:w-20 lg:h-20`}
+                style={{
+                  willChange: spinning ? 'transform' : 'auto',
+                  backfaceVisibility: 'hidden'
+                }}
               />
-         </div>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
@@ -228,7 +249,7 @@ export default function Navbar() {
         <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-out ${
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className={`${isSticky ? 'bg-slate backdrop-blur-md' : 'bg-slate backdrop-blur-sm'} 
+          <div className={`${isSticky ? 'bg-transparent/5 backdrop-blur-md' : 'bg-transparent/5 backdrop-blur-sm'} 
                           border-t border-gray-700/50`}>
             <ul className="text-white text-center py-6 space-y-4">
               {navLinks.map((link, index) => {
