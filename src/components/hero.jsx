@@ -32,8 +32,7 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-16 pt-8 sm:pt-12 lg:pt-16 pb-8 lg:pb-12">
+    <div className="mt-10 px-4 sm:px-2 md:px-8 lg:px-16 xl:px-24 relative overflow-hidden">
         <main className="w-full flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12 xl:gap-16 min-h-[calc(100vh-8rem)]">
           
           {/* Left Section */}
@@ -90,7 +89,7 @@ export default function HeroSection() {
                 Let's build something amazing — feel free to reach out!
               </h3>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center lg:items-start">
+              {/* <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center lg:items-start">
                 <a
                   href="https://wa.me/7095911484"
                   target="_blank"
@@ -116,7 +115,7 @@ export default function HeroSection() {
                 >
                   See More About Me →
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -146,6 +145,5 @@ export default function HeroSection() {
           </div>
         </main>
       </div>
-    </div>
   );
 }

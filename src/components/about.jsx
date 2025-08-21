@@ -152,14 +152,14 @@ const AboutMe = () => {
 <div className="min-h-screen px-4 sm:px-2 md:px-8 lg:px-16 xl:px-24 relative overflow-hidden">
       {/* Background Text */}
       <div className="fixed inset-0 pointer-events-none select-none overflow-hidden">
-        <div className="absolute bottom-0 left-0 opacity-5">
+        {/* <div className="absolute bottom-0 left-0 opacity-5">
           <h1
             className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-black tracking-wider whitespace-nowrap opacity-50"
             style={{ fontFamily: "Space Mono" }}
           >
             About Me
           </h1>
-        </div>
+        </div> */}
       </div>
 
       {/* Animated Background Elements */}
@@ -362,7 +362,7 @@ const AboutMe = () => {
        
 
         {/* Social Connect */}
-        <ConnectSection/>
+        {/* <ConnectSection/> */}
 
       </div>
     </div>

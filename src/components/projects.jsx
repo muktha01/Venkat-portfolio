@@ -138,14 +138,14 @@ const ProjectsComponent = () => {
     <div className="min-h-screen px-4 md:px-8 lg:px-20 relative overflow-hidden ">
       {/* Background Watermark */}
       <div className="fixed inset-0 pointer-events-none select-none overflow-hidden">
-        <div className="absolute bottom-0 left-0 opacity-5">
+        {/* <div className="absolute bottom-0 left-0 opacity-5">
           <h1
             className="text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[12rem] font-black tracking-wider whitespace-nowrap  opacity-50"
             style={{ fontFamily: "Space Mono" }}
           >
             PROJECTS
           </h1>
-        </div>
+        </div> */}
       </div>
 
       {/* Gradient Overlay */}
